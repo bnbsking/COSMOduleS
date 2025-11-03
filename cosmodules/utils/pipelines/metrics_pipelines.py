@@ -196,6 +196,7 @@ class CommonMetricsPipeline(BaseMetricsPipeline):
         """
         confusion_axis_norm = self.metrics[confusion_key].copy()
         axis_sum = confusion_axis_norm.sum(axis=axis)
+        confusion_axis_norm = confusion_axis_norm.astype(float)
         for i in range(len(confusion_axis_norm)):
             if axis == 0:
                 confusion_axis_norm[:, i] /= (axis_sum[i] + 1e-10)
