@@ -1,0 +1,8 @@
+$projectPath = "C:\Users\James\Desktop\code\COSMOduleS"
+
+docker run -it --rm `
+  -v "${projectPath}:/app" `
+  -w /app `
+  --name lapp `
+  python:3.12-slim `
+  /bin/bash
