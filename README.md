@@ -66,14 +66,16 @@ The formats can be summarized as following:
 
 
 ## **Installation**
++ Docker image as in test.sh or test.ps1
+
++ Container for testing
 ```bash
-pip install cosmodules
+bash env.sh
+source ~/.bashrc
 ```
 
-or
-
++ Directly use
 ```bash
-git clone https://github.com/bnbsking/COSMOduleS.git
 pip install -e .
 ```
 
