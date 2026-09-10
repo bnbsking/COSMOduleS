@@ -1,0 +1,16 @@
+services:
+  cosmodules:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cosmodules:v0
+    container_name: cosmodules
+    working_dir: /app
+    environment: {}
+    volumes:
+      - ./:/app
+    command: bash -c """
+      poetry run pip install -e . --no-deps
+      && tail -f /dev/null
+      """
+    

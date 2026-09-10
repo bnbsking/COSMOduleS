@@ -2,10 +2,10 @@ import copy
 import json
 from math import log
 import os
-from typing import Dict, List, Union
+from typing import Dict, List
 
-from ..utils.detection.augmentation import horizontal_flip
-from ..utils.detection.tools import get_iou
+from cosmodules.utils.augmentation import horizontal_flip
+from cosmodules.utils.iou_utils import get_iou
 
 
 class DetectionActiveLearningByHFlip:

@@ -5,7 +5,7 @@ import os
 import numpy as np
 
 from ..detection import DetectionActiveLearningByHFlip
-from ..utils.detection.augmentation import horizontal_flip
+from ..detection.acitve_learning.augmentation import horizontal_flip
 
 
 class InstanceSegmentationActiveLearningByHFlip(DetectionActiveLearningByHFlip):

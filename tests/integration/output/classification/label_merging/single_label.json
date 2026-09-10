@@ -1,0 +1,23 @@
+{
+    "categories": [
+        "dog",
+        "cat"
+    ],
+    "data": [
+        {
+            "data_path": "/app/tests/integration/input/classification/data/pic0.jpg",
+            "gt_cls": 0,
+            "controversial": false
+        },
+        {
+            "data_path": "/app/tests/integration/input/classification/data/pic1.jpg",
+            "gt_cls": null,
+            "controversial": true
+        },
+        {
+            "data_path": "/app/tests/integration/input/classification/data/pic2.jpg",
+            "gt_cls": 1,
+            "controversial": false
+        }
+    ]
+}

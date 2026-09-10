@@ -1,11 +1,9 @@
-from collections import Counter
 import copy
 import json
 import os
-import random
-from typing import Dict, List, Literal, Optional, Tuple
+from typing import Dict, List, Literal
 
-from ..utils.detection.tools import get_iou
+from cosmodules.utils.iou_utils import get_iou
 
 
 class DetectionLabelMerging:

@@ -1,0 +1,47 @@
+{
+    "categories": [
+        "__background__",
+        "text",
+        "table",
+        "image"
+    ],
+    "data": [
+        {
+            "img_path": "/app/scripts/layout_example.png",
+            "img_width": 447,
+            "img_height": 745,
+            "gt_boxes": [
+                [
+                    1,
+                    1,
+                    110,
+                    20
+                ],
+                [
+                    1,
+                    30,
+                    220,
+                    110
+                ],
+                [
+                    210,
+                    150,
+                    460,
+                    380
+                ],
+                [
+                    0,
+                    440,
+                    180,
+                    500
+                ]
+            ],
+            "gt_cls": [
+                1,
+                2,
+                3,
+                1
+            ]
+        }
+    ]
+}
