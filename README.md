@@ -1,48 +1,49 @@
 # COSMOduleS: Classification, Object detection, Segmentation MOduleS
 
-<div align="center">
-  <a href="https://pypi.python.org/pypi/cosmodules"><img src="https://img.shields.io/pypi/v/cosmodules.svg"></a><br>
-  <a href="https://pypi.org/project/cosmodules"><img src="https://img.shields.io/pypi/pyversions/cosmodules.svg"></a><br>
-  Github: <a href="https://github.com/bnbsking/COSMOduleS">source</a> <a href="https://github.com/bnbsking/COSMOduleS"><img src="pictures/github-mark-white.png" width="20" height="20"></a>
-  <!--<a href="https://github.com/bnbsking/COSMOduleS"><img src="https://img.shields.io/github/v/release/bnbsking/COSMOduleS"></a><br>-->
-</div>
 
-## **Introduction**
-This repo provides comprehensive preprocessing and post-processing tools for common **Computer Vision** tasks.
+Comprehensive preprocessing and post-processing tools for common **Computer Vision** tasks.
+
+("bg" means containing background classes which the index must start from 0 in this repo.)
 
 
-| Tasks | Subtasks | Defined<br>Format | Visualization | Format<br>Conversion | Output<br>Analysis | Label<br>Merging | Active<br>Learning |
+| Tasks | Subtasks | Defined<br>Format | Visualization | Format<br>Conversion | Metrics | Label<br>Merging | Active<br>Learning |
 | - | - | - | - | - | - | - | - |
-| Classification | binary<sup>1</sup><br> binary-bg<sup>2</sup><br> multi-class<sup>1</sup><br> multiclass-bg<sup>2</sup><br> multi-binary<sup>3</sup><br> | [single_label](example/classification/data/single_label.json)<sup>1</sup><br> [single_label_bg](example/classification/data/single_label_background.json)<sup>2</sup><br> [multi_label](example/classification/data/multi_label.json)<sup>3</sup> | - | - | [metrics<br>plotting<br>export](example/classification/s3_output_analysis.ipynb) | [ALL](example/classification/s4_label_merging.ipynb) | [Entropy](example/classification/s5_active_learning.ipynb) |
-| Detection      | - | [coco](example/detection/data/coco)<br> [voc](example/detection/data/voc)<br> [yolo](example/detection/data/yolo)<br> [**GENERAL**](example/detection/data/general.json)<br> | [ALL](example/detection/s1_visualization_gt_and_pd.ipynb) | [between ANY<br>two types](example/detection/s2_format_conversion.ipynb) | [metrics<br>plotting<br>export](example/detection/s3_output_analysis.ipynb) | [V](example/detection/s4_label_merging.ipynb) | [horizontal<br>flip](example/detection/s5_active_learning.ipynb) |
-| Segmentation   | instance<sup>1</sup><br> semantic<sup>2</sup><br> | [coco](example/segmentation/data/coco)<sup>1+2</sup><br> [**GENERAL**](example/segmentation/data/general)<sup>1+2</sup> | [ALL](example/segmentation/s1_visualization_gt_and_pd.ipynb) | [coco2general](example/segmentation/s2_format_conversion.ipynb) | [metrics<br>plotting<br>export](example/segmentation/s3_output_analysis.ipynb) | - | [instance<br>semantic<br>](example/segmentation/s5_active_learning.ipynb) |
+| Classification | single-label<br> single-label-bg<br> multi-label(binary)<br> | [single_label](tests/integration/input/classification/data/single_label.json)<br> [single_label_bg](tests/integration/input/classification/data/single_label_background.json)<br> [multi_label](tests/integration/input/classification/data/multi_label.json) | - | - | [ALL](tests/integration/cosmodules/classification/metrics) | [ALL](tests/integration/cosmodules/classification/test_label_merging.py) | [Entropy](tests/integration/cosmodules/classification/test_active_learning.py) |
+| Detection      | - | [coco](tests/integration/input/detection/data/coco/coco.json)<br> [voc](tests/integration/input/detection/data/voc)<br> [yolo](tests/integration/input/detection/data/yolo)<br> [**GENERAL**](tests/integration/input/detection/data/general)<br> | [ALL](tests/integration/cosmodules/detection/visualization/test_show.py) | [between ANY<br>two types](tests/integration/cosmodules/detection/format_conversion/test_dataset_conversion.py) | [ALL](tests/integration/cosmodules/detection/metrics) | [ALL](tests/integration/cosmodules/detection/test_label_merging.py) | [horizontal<br>flip](tests/integration/cosmodules/detection/test_active_learning.py) |
+| Segmentation   | instance<sup>1</sup><br> semantic<sup>2</sup><br> | [coco](.)<sup>1+2</sup><br> [**GENERAL**](.)<sup>1+2</sup> | [ALL](.) | [coco2general](.) | [ALL](.) | - | [instance<br>semantic<br>](.) |
 
 
-+ "bg" means background. If there is background class, it must be class 0 in this repo.
-+ Adding prediction results after the defined format can use the visualization and output analysis. All the formats with predictions are in `example/*/prediction`, e.g. [here](example/detection/prediction/general.json).
+(segmentation not refactored yet)
 
 
-## **Motivation**
+## Quick start
 
-+ **[Classification]** Complicated tasks
++ SDK
+    ```bash
+    pip install -e .
+    ```
 
-| task                                          | label idx min | compute class-0 metrics | threshold optimization | data format |  
-| -                                             | -             | -                       | -                      | -           |
-| binary classification                         | 0             | V                       | V                      | [single_label](example/classification/data/single_label.json)       |
-| binary classification (cls-0 background)      | 1             |                         | V                      | [single_label_background](example/classification/data/single_label_background.json) |
-| multi-class classification                    | 0             | V                       |                        | single_label |
-| multi-class classification (cls-0 background) | 1             |                         | V                      | single_label_background |
-| multi-label classification (cls-0 background) | 0             |                         | V                      | [multi_label](example/classification/data/multi_label.json)   |
-
-
-+ **[Classification]** threshold optimization
-    + `multi-class classification (cls-0 background)` checks whether prob-cls-0 < threshold, if yes, the pd-cls is pd[1:].argmax()
-    + `multi-class classification (cls-0 background)` and `multi-label classification (cls-0 background)` take the mean of all optimized threshold for each foreground class
++ Debug
+    ```bash
+    docker compose build
+    docker compose up -d
+    ```
 
 
-+ **[Object Detection]** Develop a [**GENERAL**](example/detection/data/general.json) format to be the most convenient.
+## Motivation
 
-The formats can be summarized as following:
++ Classification
+
+| task                       | data format             | compute class-0 metrics | threshold optimization |  
+| -                          | -                       | -                       | -                      |
+| multi-class classification | single label            | V                       |                        |
+| anomaly classification     | single label background |                         | V (fore-back)          |
+| multi-label classification | multi_label             | V                       | V (mean)               |
+
++ Object Detection
+    + Develop a **GENERAL** format to be the most convenient.
+    + The formats can be summarized as following:
+
 | format | extension | files     | type  | box                      | disadvantage |
 | -      | -         | -         | -     | -                        | -            |
 | coco   | .json     | 1         | int   | (xmin, ymin, w, h)       | get label of an image |
@@ -51,7 +52,11 @@ The formats can be summarized as following:
 | general| .json | 1 | int | (xmin, ymin, xmax, ymax) | **NO** |
 
 
-+ **[Segmentation]** Develop a [**GENERAL**](example/segmentation/data/general) format to be the most convenient.
++ Segmentation
+    + Develop a **GENERAL** format to be the most convenient.
+    + prediction format
+        + numpy, shape=(num_classes, H, W)
+        + value=0~1 
 
 
 | Includes         | Content | Advantage |
@@ -62,242 +67,10 @@ The formats can be summarized as following:
 | *.jpg            | Raw data | - |
 
 
-+ Segmentation prediction format: `(num_classes, H, W) with 0~1 float values (probability)`. e.g. [here](example/segmentation/prediction/instance/pd_filled_img1.npy)
 
 
-## **Installation**
-+ Docker image as in test.sh or test.ps1
-
-+ Container for testing
-```bash
-bash env.sh
-source ~/.bashrc
-```
-
-+ Directly use
-```bash
-pip install -e .
-```
-
-## **Quick Start - Classification**
-+ Output Analysis:
-    + Please conform your data format as either of one
-        + [single_label](example/classification/data/single_label.json)
-        + [multilabel](example/classification/data/multi_label.json)
-        + [single_label_background](example/classification/data/single_label_background.json)
-    + The analysis pipeline is at [here](cosmodules/classification/output_analysis.yaml)
-    + See more in the [example](example/classification/s3_output_analysis.ipynb)
-
-```python
-from cosmodules.classification import ClassificationAnalysis
-
-ClassificationAnalysis(
-    ant_path = "example/classification/data/single_label.json",
-    save_folder = "example/classification/output/single_label",
-)
-```
-
-+ Label Merging:
-```python
-from cosmodules.classification import ClassificationLabelMerging
-
-ClassificationLabelMerging(
-    cfg_path_list = [
-        "example/classification/data/single_label.json",
-        "example/classification/data_another_labeler/single_label.json",
-    ],
-    save_path = f"example/classification/output/label_merging/single_label.json"
-)
-```
-
-+ Active Learning (see more in the [example](example/classification/s5_active_learning.ipynb)):
-```python
-from cosmodules.classification import ClassificationActiveLearning
-
-ClassificationActiveLearning(
-    pred_path = "example/classification/prediction/single_label.json",
-    save_path = "example/classification/output/active_learning/single_label.json",
-    loss_name = "entropy"
-)
-```
-
-## **Quick Start - Object detection**
-+ Format Conversion (see more in the [example](example/detection/s2_format_conversion.ipynb))
-
-```python
-from cosmodules.detection import coco2any
-
-coco2any(
-    tgt_foramt = "voc",
-    img_folder = "example/detection/data/coco",
-    ant_path = "example/detection/data/coco/coco.json",
-    save_folder = "example/detection/output/visualization_gt_conversion/coco2voc"
-)
-```
-
-or 
-
-```python
-from cosmodules.detection import coco2general
-
-coco2general(
-    img_folder = "example/detection/data/coco",
-    ant_path = "example/detection/data/coco/coco.json",
-    save_path = "example/detection/output/visualization_gt_conversion/coco2general/general.json"
-)
-```
-
-+ Visualization (see more in the [example](example/detection/s1_visualization_gt_and_pd.ipynb))
-
-```python
-from cosmodules.detection import show_coco
-
-show_coco(
-    img_name = "pic0.jpg",
-    img_folder = "example/detection/data/coco",
-    ant_path = "example/detection/data/coco/coco.json"
-)
-```
-
-or
-
-```python
-from cosmodules.detection import show_general
-
-show_general(
-    img_name = "pic0.jpg",
-    ant_path = "example/detection/data/general.json",
-)  # when the anntotation includes predictions it will be shown!
-```
-
-+ Output Analysis
-    + Please use the above `Format conversion` to change data format as [general](example/detection/data/general.json)
-    + The analysis pipeline is at [here](cosmodules/detection/output_analysis.yaml)
-
-```python
-from cosmodules.detection import DetectionAnalysis
-
-DetectionAnalysis(
-    ant_path = "example/detection/data/general.json",
-    save_folder = "example/detection/output/metrics"
-)
-```
-
-+ Label Merging:
-```python
-from cosmodules.detection import DetectionLabelMerging
-
-DetectionLabelMerging(
-    cfg_path_list = [
-        "example/detection/data/general.json",
-        "example/detection/data_another_labeler/general.json",
-    ],
-    save_path = "example/detection/output/label_merging/general.json",
-    ties_handling = "union"
-)
-```
-
-+ Active Learning:
-```python
-from cosmodules.detection import DetectionActiveLearningByHFlip
-
-DetectionActiveLearningByHFlip(
-    pred_path_1 = f"{ROOT}/example/detection/prediction/general.json",
-    pred_path_2 = f"{ROOT}/example/detection/prediction/general_horizontal_flip.json",
-    save_path = f"{ROOT}/example/detection/output/active_learning/general.json"
-)
-```
-
-## **Quick Start - Segmentation**
-+ Format Conversion (see more in the [example](example/segmentation/s2_format_conversion.ipynb))
-
-```python
-from cosmodules.segmentation import coco2general
-
-coco2general(
-    img_folder = "example/segmentation/data/coco",
-    ant_path = "example/segmentation/data/coco/coco.json",
-    save_folder = f"example/segmentation/output/visualization_gt_conversion/coco2general"
-)
-```
-
-+ Visualization (see more in the [example](example/segmentation/s1_visualization_gt_and_pd.ipynb))
-
-```python
-from cosmodules.segmentation import show_coco
-
-show_coco(
-    img_name = "img1.jpg",
-    img_folder = "example/segmentation/data/coco",
-    ant_path = "example/segmentation/data/coco/coco.json"
-)   # when the anntotation includes predictions it will be shown!
-```
-
-or
-
-```python
-from cosmodules.segmentation import show_general
-
-show_general(
-    img_name = "img1.jpg",
-    ant_path = "example/segmentation/data/general/general.json"
-)
-```
-
-+ Output Analysis
-    + Please use the above `Format conversion` to change data format as [general](example/segmentation/data/general)
-    + The analysis pipeline is at [here](cosmodules/segmentation/output_analysis_instance.yaml)
-
-```python
-from cosmodules.segmentation import SegmentationAnalysis
-
-SegmentationAnalysis(
-    ant_path = "example/segmentation/prediction/instance/general.json",
-    save_folder = "example/segmentation/output/metrics/instance",
-    task = "instance",
-)
-```
-
-or
-
-```Python
-from cosmodules.segmentation import SegmentationAnalysis
-
-SegmentationAnalysis(
-    ant_path = "example/segmentation/prediction/semantic/general.json",
-    save_folder = "example/segmentation/output/metrics/semantic",
-    task = "semantic"
-)
-```
-
-+ Active Learning:
-```python
-from cosmodules.segmentation import (
-    InstanceSegmentationActiveLearningByHFlip,
-    SemanticSegmentationActiveLearning
-)
-
-InstanceSegmentationActiveLearningByHFlip(
-    pred_path_1 = "example/segmentation/prediction/instance/general.json",
-    pred_path_2 = "example/segmentation/prediction/instance_horizontal_flip/general.json",
-    save_path = "example/segmentation/output/active_learning/instance.json"
-)
-```
-
-or
-
-```python
-SemanticSegmentationActiveLearning(
-    pred_path = "example/segmentation/prediction/semantic/general.json",
-    save_path = "example/segmentation/output/active_learning/semantic.json",
-    loss_name = "entropy"
-)
-```
 
 ## **Examples**
-+ **[detection]**: format conversion workflow
-![.](pictures/detection_workflow.png)
-
 + detection visualization
 ![.](pictures/detection_visualization.jpg)
 
@@ -313,88 +86,6 @@ SemanticSegmentationActiveLearning(
 + Notice not supported
     + segmentation general2coco
     + segmentation label merging
-
-
-## **Updates**
-+ v1.1.0:
-    + Add docker environment
-    + Improve classification and detection metrics pipeline
-        + template design pattern
-        + hybrid approach of
-            + stateless (get / staticmethod / abstract method)
-            + stateful (_set / instance method)
-        + cleaner architecture of
-            + pr curve
-            + confusion matrices
-            + threshold optimization
-        + add unit tests
-            + see in [here](tests/utils/flow/metrics)
-
-```python
-from cosmodules.utils.flow.metrics.classification_metrics import ClassificationMetricsFlow
-
-class TestClassificationMetricsFlow:
-    def test_run_single_label(self):
-        obj = ClassificationMetricsFlow(
-            num_classes = 2,
-            labels = np.array([0, 0, 1]),
-            predictions = np.array([
-                [0.95, 0.05],
-                [0.1, 0.9],
-                [0.2, 0.8]
-            ]),
-            save_path = "/app/example/classification/output/metrics_new/single_label/metrics.json",
-        )
-        results = obj.run()
-        print("Results:", results)
-
-if __name__ == "__main__":
-    test = TestClassificationMetricsFlow()
-    test.test_run_single_label()
-```
-
-or 
-
-```python
-import numpy as np
-
-from cosmodules.utils.flow.metrics.detection_metrics import DetectionMetricsFlow
-
-
-class TestDetectionMetricsFlow:
-    def test_run(self):
-        obj = DetectionMetricsFlow(
-            num_classes = 3,
-            labels = [
-                np.array([[1, 0, 23, 220, 228]]),
-                np.array([[1, 8, 15, 715, 630], [2, 733, 64, 1174, 588]]),
-                np.array([[1, 35, 7, 112, 114], [1, 171, 58, 263, 121], [2, 114, 39, 170, 118], [2, 259, 62, 326, 118]]),
-            ],
-            predictions = [
-                np.array([
-                    [0, 23, 220, 228, 0.95, 1],
-                    [30, 90, 80, 150, 0.8, 2],
-                ]),
-                np.array([
-                    [8, 15, 715, 630, 0.85, 1],
-                    [733, 64, 1174, 588, 0.6, 1],
-                ]),
-                np.array([
-                    [35, 7, 112, 114, 0.75, 1],
-                    [171, 58, 211, 88, 0.45, 1],
-                    [114, 39, 170, 118, 0.99, 2],
-                ]),
-            ],
-            save_path = "/app/example/detection/output/metrics_new/metrics.json",
-        )
-        results = obj.run()
-        print("Results:", results)
-
-
-if __name__ == "__main__":
-    test = TestDetectionMetricsFlow()
-    test.test_run()
-```
 
 
 ## **Acknowledgement**
