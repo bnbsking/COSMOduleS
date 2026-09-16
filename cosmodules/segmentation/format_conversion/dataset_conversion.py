@@ -1,14 +1,13 @@
-from collections import defaultdict
 import json
 import os
 import shutil
-from typing import Dict, List, Literal
+from typing import Dict, List
 
 import cv2
 import numpy as np
 
 
-def get_category_list(categories: List[Dict]):
+def get_category_list(categories: List[Dict]) -> List[str]:
     max_cat_id = max(category['id'] for category in categories)
     category_list = ["__background__"] * (max_cat_id + 1)
     for cat_dict in categories:
