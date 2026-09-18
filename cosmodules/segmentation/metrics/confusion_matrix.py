@@ -1,41 +1,15 @@
 """
 Reference: https://github.com/kaanakan/object_detection_confusion_matrix/blob/master/confusion_matrix.py
 """
-from abc import abstractmethod
 from collections import Counter
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 import numpy as np
 
-
-class BaseConfusionMatrix:
-    def __init__(
-            self,
-            num_classes: int,  # includes background
-            CONF_THRESHOLD: float = 0.3,
-            IOU_THRESHOLD: float = 0.5,
-            img_idx: Optional[int] = None,
-        ):
-        self.confusion = np.zeros((num_classes, num_classes))
-        self.confusion_with_img_indices = [
-            [Counter() for _ in range(num_classes)] for _ in range(num_classes)
-        ]
-        self.CONF_THRESHOLD = CONF_THRESHOLD
-        self.IOU_THRESHOLD = IOU_THRESHOLD
-        self.img_idx = img_idx
-
-    @abstractmethod
-    def process_batch(self, detections, labels: np.ndarray, **kwargs) -> None:
-        raise NotImplementedError
-    
-    def get_confusion(self) -> np.ndarray:
-        return self.confusion
-
-    def get_confusion_with_img_indices(self) -> List[List[Counter[int, int]]]:
-        return self.confusion_with_img_indices
+from cosmodules.utils.iou_utils import box_iou_calc
 
 
-class SegmentationConfusionMatrix(BaseConfusionMatrix):
+class SegmentationConfusionMatrix:
     def __init__(
             self,
             num_classes: int,  # includes background
@@ -44,8 +18,14 @@ class SegmentationConfusionMatrix(BaseConfusionMatrix):
             SEG_IOU_THRESHOLD: float = 0.3,
             img_idx: Optional[int] = None,
         ):
-        super().__init__(num_classes, CONF_THRESHOLD, IOU_THRESHOLD, img_idx)
+        self.confusion = np.zeros((num_classes, num_classes))
+        self.confusion_with_img_indices = [
+            [Counter() for _ in range(num_classes)] for _ in range(num_classes)
+        ]
+        self.CONF_THRESHOLD = CONF_THRESHOLD
+        self.IOU_THRESHOLD = IOU_THRESHOLD
         self.SEG_IOU_THRESHOLD = SEG_IOU_THRESHOLD
+        self.img_idx = img_idx
 
     def process_batch(
             self,
@@ -154,3 +134,9 @@ class SegmentationConfusionMatrix(BaseConfusionMatrix):
 
         iou = np.sum(np.logical_and(label_mask, detection_mask)) / np.sum(np.logical_or(label_mask, detection_mask))
         return float(iou)
+
+    def get_confusion(self) -> np.ndarray:
+        return self.confusion
+
+    def get_confusion_with_img_indices(self) -> List[List[Counter[int, int]]]:
+        return self.confusion_with_img_indices
