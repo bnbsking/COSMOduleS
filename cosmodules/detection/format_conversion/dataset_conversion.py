@@ -60,12 +60,12 @@ class ConvertDatasetFromAnyToGeneral:
         if save_path is not None:
             os.makedirs(os.path.dirname(save_path), exist_ok=True)
             with open(save_path, "w", encoding="utf-8") as f:
-                json.dump(out, f, indent=4)
+                json.dump(out, f, indent=4, ensure_ascii=False)
         return out
 
     @staticmethod
     def coco2general(
-            img_folder: str,
+            img_folder: str,  # allow "" if img_dict["file_name"] is full path
             ant_path: str,
             save_path: str | None = None,
             cat_index_start: int = 1
@@ -112,7 +112,7 @@ class ConvertDatasetFromAnyToGeneral:
         if save_path is not None:
             os.makedirs(os.path.dirname(save_path), exist_ok=True)
             with open(save_path, "w", encoding="utf-8") as f:
-                json.dump(out, f, indent=4)
+                json.dump(out, f, indent=4, ensure_ascii=False)
         return out
 
     @staticmethod
@@ -168,7 +168,7 @@ class ConvertDatasetFromAnyToGeneral:
         if save_path is not None:
             os.makedirs(os.path.dirname(save_path), exist_ok=True)
             with open(save_path, "w", encoding="utf-8") as f:
-                json.dump(out, f, indent=4)
+                json.dump(out, f, indent=4, ensure_ascii=False)
         return out
 
 
@@ -294,7 +294,7 @@ class ConvertDatasetFromGeneral2Any:
 
         save_path = os.path.join(save_folder, "coco.json")
         with open(save_path, "w", encoding="utf-8") as f:
-            json.dump(out, f, indent=4)
+            json.dump(out, f, indent=4, ensure_ascii=False)
 
 
 class ConvertDatasetFromAnyToAny:

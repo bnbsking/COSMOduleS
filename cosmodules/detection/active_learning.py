@@ -27,7 +27,7 @@ class DetectionActiveLearningByHFlip:
         pred["data"] = sorted(pred["data"], key=lambda x: x["loss"], reverse=True)
 
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
-        json.dump(pred, open(save_path, 'w'), indent=4)
+        json.dump(pred, open(save_path, 'w'), indent=4, ensure_ascii=False)
     
     def format_consistency_check(self, pred1: Dict, pred2: Dict):
         assert pred1["categories"] == pred2["categories"]

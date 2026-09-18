@@ -22,7 +22,7 @@ class ClassificationLabelMerging:
 
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
         with open(save_path, 'w') as f:
-            json.dump(cfg_merged, f, indent=4)
+            json.dump(cfg_merged, f, indent=4, ensure_ascii=False)
 
     def format_consistency_check(self, cfg_list: List[Dict]):
         cfg0 = cfg_list[0]

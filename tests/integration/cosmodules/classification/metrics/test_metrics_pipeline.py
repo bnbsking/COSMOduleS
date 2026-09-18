@@ -21,7 +21,7 @@ class TestClassificationMetricsPipeline:
         print(out)
         
         with open("tests/integration/output/classification/metrics/single_label_metrics.json", "w") as f:
-            json.dump(out, f, indent=4)
+            json.dump(out, f, indent=4, ensure_ascii=False)
 
     def test_run_single_label_background(self):
         num_classes = 2
@@ -38,7 +38,7 @@ class TestClassificationMetricsPipeline:
         print(out)
 
         with open("tests/integration/output/classification/metrics/single_label_background_metrics.json", "w") as f:
-            json.dump(out, f, indent=4)
+            json.dump(out, f, indent=4, ensure_ascii=False)
 
     def test_run_multi_label(self):
         num_classes = 2
@@ -68,7 +68,7 @@ class TestClassificationMetricsPipeline:
         print(out)
 
         with open("tests/integration/output/classification/metrics/multi_label_metrics.json", "w") as f:
-            json.dump(out, f, indent=4)
+            json.dump(out, f, indent=4, ensure_ascii=False)
 
 
 if __name__ == "__main__":

@@ -102,4 +102,4 @@ def coco2general(
         data_dict.pop("gt_contour")
         #data_dict["gt_contour"] = [gt_contour.tolist() for gt_contour in data_dict["gt_contour"]]
     with open(os.path.join(save_folder, "general.json"), 'w') as f:
-        json.dump(general, f, indent=4)
+        json.dump(general, f, indent=4, ensure_ascii=False)

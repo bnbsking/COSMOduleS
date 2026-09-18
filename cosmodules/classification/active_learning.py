@@ -15,7 +15,7 @@ class ClassificationActiveLearning:
         pred["data"] = sorted(pred["data"], key=lambda x: x["loss"], reverse=True)
 
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
-        json.dump(pred, open(save_path, 'w'), indent=4)
+        json.dump(pred, open(save_path, 'w'), indent=4, ensure_ascii=False)
     
     def entropy(self, pd_probs: Union[List[float], List[List[float]]]) -> float:
         if isinstance(pd_probs[0], float):

@@ -41,7 +41,7 @@ class InstanceSegmentationActiveLearningByHFlip(DetectionActiveLearningByHFlip):
         pred["data"] = sorted(pred["data"], key=lambda x: x["loss"], reverse=True)
 
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
-        json.dump(pred, open(save_path, 'w'), indent=4)
+        json.dump(pred, open(save_path, 'w'), indent=4, ensure_ascii=False)
     
     def mask_consistency_loss(
             self,
@@ -70,7 +70,7 @@ class SemanticSegmentationActiveLearning:
         pred["data"] = sorted(pred["data"], key=lambda x: x["loss"], reverse=True)
 
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
-        json.dump(pred, open(save_path, 'w'), indent=4)
+        json.dump(pred, open(save_path, 'w'), indent=4, ensure_ascii=False)
     
     def entropy(self, pd_filled_path: str) -> float:
         mask = np.load(pd_filled_path, allow_pickle=True)

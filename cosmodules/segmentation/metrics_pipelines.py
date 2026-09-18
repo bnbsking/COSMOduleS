@@ -46,7 +46,7 @@ class BaseMetricsPipeline:
         os.makedirs(os.path.dirname(self.save_path), exist_ok=True)
         with open(self.save_path, "w") as f:
             metrics = self._deserialize(self.metrics)
-            json.dump(metrics, f, indent=4)
+            json.dump(metrics, f, indent=4, ensure_ascii=False)
         return self.metrics
 
 

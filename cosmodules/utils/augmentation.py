@@ -18,4 +18,4 @@ def horizontal_flip_io(ant_path: str, save_path: str):
     general = horizontal_flip(general)
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
     with open(save_path, "w") as f:
-        json.dump(general, f, indent=4)
+        json.dump(general, f, indent=4, ensure_ascii=False)

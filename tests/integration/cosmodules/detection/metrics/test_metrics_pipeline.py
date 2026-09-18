@@ -44,7 +44,7 @@ class TestDetectionMetricsPipeline:
         print(out)
 
         with open("tests/integration/output/detection/metrics/metrics.json", "w") as f:
-            json.dump(out, f, indent=4)
+            json.dump(out, f, indent=4, ensure_ascii=False)
         
 
 if __name__ == "__main__":
