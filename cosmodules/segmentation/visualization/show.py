@@ -23,7 +23,7 @@ def show_general(
         save_path (None | str): save path. if None, not saved. 
     """
     general = json.load(open(ant_path, 'r'))
-    data_dict = next(data_dict for data_dict in general["data"] if os.path.basename(data_dict["img_path"])==img_name)
+    data_dict = next(data_dict for data_dict in general["data"] if os.path.basename(data_dict["img_path"])==os.path.basename(img_name))
     
     img = cv2.imread(data_dict["img_path"])
     gt_contour_npy = np.load(data_dict["gt_contour_path"], allow_pickle=True)

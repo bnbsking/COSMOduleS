@@ -41,7 +41,7 @@ def test_plot_all():
         [0.25, 0.75, 0.0],
         [0.667, 0.0, 0.333]
     ])
-    save_folder = "tests/integration/cosmodules/detection/metrics/plot_all"
+    save_folder = "/app/tests/integration/output/detection/metrics/plot_all"
 
     plot_all(
         class_name_list,
