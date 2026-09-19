@@ -3,18 +3,15 @@
 
 Comprehensive preprocessing and post-processing tools for common **Computer Vision** tasks.
 
-("bg" means containing background classes which the index must start from 0 in this repo.)
-
 
 | Tasks | Subtasks | Defined<br>Format | Visualization | Format<br>Conversion | Metrics | Label<br>Merging | Active<br>Learning |
 | - | - | - | - | - | - | - | - |
 | Classification | single-label<br> single-label-bg<br> multi-label(binary)<br> | [single_label](tests/integration/input/classification/data/single_label.json)<br> [single_label_bg](tests/integration/input/classification/data/single_label_background.json)<br> [multi_label](tests/integration/input/classification/data/multi_label.json) | - | - | [ALL](tests/integration/cosmodules/classification/metrics) | [ALL](tests/integration/cosmodules/classification/test_label_merging.py) | [Entropy](tests/integration/cosmodules/classification/test_active_learning.py) |
 | Detection      | - | [coco](tests/integration/input/detection/data/coco/coco.json)<br> [voc](tests/integration/input/detection/data/voc)<br> [yolo](tests/integration/input/detection/data/yolo)<br> [**GENERAL**](tests/integration/input/detection/data/general)<br> | [ALL](tests/integration/cosmodules/detection/visualization/test_show.py) | [between ANY<br>two types](tests/integration/cosmodules/detection/format_conversion/test_dataset_conversion.py) | [ALL](tests/integration/cosmodules/detection/metrics) | [ALL](tests/integration/cosmodules/detection/test_label_merging.py) | [horizontal<br>flip](tests/integration/cosmodules/detection/test_active_learning.py) |
-| Segmentation   | instance<br> semantic<br> | [coco](tests/integration/input/segmentation/data/coco)<br> [**GENERAL**](tests/integration/input/segmentation/data/general) | [ALL](tests/integration/cosmodules/segmentation/visualization/test_show.py) | [coco2general](tests/integration/cosmodules/segmentation/format_conversion/test_dataset_conversion.py) | [ALL](tests/integration/cosmodules/segmentation/metrics) | - | [instance<br>semantic<br>](.) |
+| Segmentation   | instance<br> semantic<br> | [coco](tests/integration/input/segmentation/data/coco)<br> [**GENERAL**](tests/integration/input/segmentation/data/general) | [ALL](tests/integration/cosmodules/segmentation/visualization/test_show.py) | [coco2general](tests/integration/cosmodules/segmentation/format_conversion/test_dataset_conversion.py) | [ALL](tests/integration/cosmodules/segmentation/metrics) | - | [instance<br>semantic<br>](tests/integration/cosmodules/segmentation/test_active_learning.py) |
 
 
-(segmentation not refactored yet)
-
++ "bg" means containing background classes which the index must start from 0 in this repo.
 
 ## Quick start
 
