@@ -36,7 +36,7 @@ def get_ap_list(refined_pr_curves: List[PRCurve]) -> List[float]:
     for refined_pr_curve in refined_pr_curves:
         ap = 0
         for j in range(k_val - 1):
-            ap += refined_pr_curve.precision[j] * \
+            ap += (refined_pr_curve.precision[j] + refined_pr_curve.precision[j + 1]) / 2 * \
                 (refined_pr_curve.recall[j + 1] - refined_pr_curve.recall[j])
         ap_list.append(round(ap, 3))
     return ap_list
@@ -91,7 +91,9 @@ class ThresholdOptimizer:
                 score = score_func(**args)
                 weighted_score_list[j] += score * class_weight
         thresholds = np.linspace(0, 1, k_val)
-        _, best_threshold = max(zip(weighted_score_list, thresholds))
+        max_score = max(weighted_score_list)
+        thresholds_with_max_score = [threshold for score, threshold in zip(weighted_score_list, thresholds) if score == max_score]
+        best_threshold = thresholds_with_max_score[len(thresholds_with_max_score) // 2]
         return best_threshold
 
 
@@ -130,7 +132,8 @@ def get_sorted_accuracy_index_list(
                 else:
                     wrong_cnt[idx] += times
     accuracy_index_list = [
-        (round(rc / (rc + wc + 1e-10), 3), i)
+        (round(rc / (rc + wc + 1e-10), 3), i) if rc + wc > 0 else (1.0, i)
         for i, (rc, wc) in enumerate(zip(right_cnt, wrong_cnt))
     ]
+    accuracy_index_list = [tup for tup in accuracy_index_list if tup[0] < 1.0]
     return sorted(accuracy_index_list)

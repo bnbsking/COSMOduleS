@@ -240,7 +240,14 @@ class ConvertDatasetFromGeneral2Any:
             f.write("\n".join(categories[1:]))
 
     @staticmethod
-    def general2coco(ant_path: str, save_folder: str, cat_index_start: int = 1):
+    def general2coco(
+            ant_path: str,
+            save_folder: str,
+            cat_index_start: int = 1,
+            img_path_use_basename_only: bool = True,
+            copy_images: bool = True,
+            save_name: str = "coco.json"
+        ):
         # initialization
         with open(ant_path, "r", encoding="utf-8") as f:
             general = json.load(f)
@@ -263,7 +270,7 @@ class ConvertDatasetFromGeneral2Any:
         for img_id, data_dict in enumerate(data):
             out["images"].append(
                 {
-                    "file_name": os.path.basename(data_dict["img_path"]),
+                    "file_name": os.path.basename(data_dict["img_path"]) if img_path_use_basename_only else data_dict["img_path"],
                     "width": data_dict["img_width"],
                     "height": data_dict["img_height"],
                     "id": img_id
@@ -290,9 +297,10 @@ class ConvertDatasetFromGeneral2Any:
                     }
                 )
                 total_labels += 1
-            shutil.copy(data_dict["img_path"], save_folder)
+            if copy_images:
+                shutil.copy(data_dict["img_path"], save_folder)
 
-        save_path = os.path.join(save_folder, "coco.json")
+        save_path = os.path.join(save_folder, save_name)
         with open(save_path, "w", encoding="utf-8") as f:
             json.dump(out, f, indent=4, ensure_ascii=False)
 

@@ -10,7 +10,7 @@ def export_worst_cases(
         ant_path: str,
         sorted_accuracy_index_list: List[Tuple[float, int]],
         save_folder: str,
-        top_n: int | None = None
+        top_n: int | None = 10
     ):
     os.makedirs(os.path.join(save_folder, "raw"), exist_ok=True)
     os.makedirs(os.path.join(save_folder, "visualized"), exist_ok=True)

@@ -85,7 +85,7 @@ class TestThresholdOptimizer:
         gt_class_cnts = [4, 3]
 
         best_threshold = ThresholdOptimizer().run(pr_curves, gt_class_cnts)
-        assert best_threshold == 0.74
+        assert best_threshold == 0.67
 
 
 def test_get_confusion_axis_norm():
@@ -122,7 +122,7 @@ def test_get_sorted_accuracy_index_list():
         samples,
         confusion_with_img_indices
     )
-    assert out == [(0.0, 1), (0.5, 2), (1.0, 0)]
+    assert out == [(0.0, 1), (0.5, 2)]
     
 
 if __name__ == "__main__":

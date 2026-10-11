@@ -73,7 +73,7 @@ def show(
         label: DetectionLabel,
         save_path: str | None = None,
         box_width: int = 4,
-        value_ratios: Tuple[int, int] = (1,1)
+        value_ratios: Tuple[float, float] = (0.05, 0.1)
     ):
     class_list.pop(0) if class_list[0] == "__background__" else None
     img_raw = cv2.imread(label.img_path)[:, :, ::-1]/255
@@ -109,8 +109,9 @@ def show(
         # confidence patches
         unit_digit, tens_digit = int(pd_conf * 10), int(pd_conf * 100) % 10
         P = get_confidence_patch(unit_digit, tens_digit, color=colors[pd_cid])
-        (ph, pw, _), (rh, rw) = P.shape, value_ratios
-        P = cv2.resize(P, (int(pw * rw), int(ph * rh)) )
+        ph = int(img_pd.shape[0] * value_ratios[0])
+        pw = int(img_pd.shape[1] * value_ratios[1])
+        P = cv2.resize(P, (pw, ph))
         try:
             if ymin >= P.shape[0] and xmin + P.shape[1] < img_pd.shape[1]:  # upper bar - up
                 img_pd[ymin - P.shape[0]:ymin, xmin:xmin + P.shape[1], :] = P

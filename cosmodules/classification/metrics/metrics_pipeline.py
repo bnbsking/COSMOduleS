@@ -55,7 +55,7 @@ class ClassificationMetricsPipeline:
         for i, threshold in enumerate(np.linspace(0, 1, k)):
             for j in range(start_idx, num_classes):
                 if is_single_label:
-                    gt_cls = labels
+                    gt_cls = (labels == j).astype(np.int32)
                     pd_cls = (predictions[:, j] >= threshold).astype(np.int32)
                 else:
                     gt_cls = labels[:, j]
@@ -84,7 +84,7 @@ class ClassificationMetricsPipeline:
         elif is_single_label:  # binary or "multiclass with background"
             gt_cls = labels
             pd_cls = np.where(
-                    predictions[:, 0] < threshold,
+                    predictions[:, 0] >= threshold,
                     0,
                     predictions[:, 1:].argmax(axis=1) + 1
                 )
@@ -117,7 +117,7 @@ class ClassificationMetricsPipeline:
         elif is_single_label:  # binary or "multiclass with background"
             gt_cls = labels
             pd_cls = np.where(
-                    predictions[:, 0] < threshold,
+                    predictions[:, 0] >= threshold,
                     0,
                     predictions[:, 1:].argmax(axis=1) + 1
                 )
